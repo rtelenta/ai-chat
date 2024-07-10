@@ -25,12 +25,8 @@ export function ChatBubble({
     if (isFake) {
       setTimeout(() => {
         setIsLoadingFake(false);
-      }, 1000);
+      }, 2000);
     }
-
-    return () => {
-      setIsLoadingFake(false);
-    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

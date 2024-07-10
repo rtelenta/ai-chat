@@ -5,7 +5,14 @@ import supabase from "@/config/supabase";
 import { formatRelative } from "date-fns";
 import { es } from "date-fns/locale";
 
-import { Fragment, useState } from "react";
+import {
+  Fragment,
+  use,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { MdRocketLaunch, MdSend } from "react-icons/md";
 
 type Message = {
@@ -15,6 +22,7 @@ type Message = {
 };
 
 export default function Home() {
+  const chatRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       time: new Date(),
@@ -42,6 +50,14 @@ export default function Home() {
     }
   };
 
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      chatRef.current?.scrollTo({
+        top: chatRef.current?.scrollHeight,
+      });
+    }, 100);
+  }, [messages]);
+
   return (
     <main className="p-4 flex h-screen">
       <div className="w-[260px] prose">
@@ -54,7 +70,7 @@ export default function Home() {
       </div>
 
       <div className="bg-white flex flex-col flex-1 rounded-xl p-4 text-primary-content h-full">
-        <div className="flex-1 overflow-auto pb-4 pt-8">
+        <div className="flex-1 overflow-auto pb-4 pt-8" ref={chatRef}>
           <div className="mx-auto flex flex-col flex-1 gap-3 text-base md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
             {messages.map((message) => (
               <ChatBubble
